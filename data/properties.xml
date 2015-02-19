@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This XML file allows us to easily customize the look and language used
+    in our program's user interface. Note that this is for customizing settings
+    for the Course Schedule Builder interface, NOT the Web page that we're building. 
+-->
+<properties>
+    <property_list>    
+        <property name="PROP_APP_TITLE"   value="Course Site Builder"></property>  
+        
+        <!-- PROGRAM ICON FILES -->
+        <property name="NEW_COURSE_ICON"    value="New.png"></property>
+        <property name="LOAD_COURSE_ICON"   value="Load.png"></property>
+        <property name="SAVE_COURSE_ICON"   value="Save.png"></property>
+        <property name="VIEW_SCHEDULE_ICON" value="View.png"></property>
+        <property name="EXPORT_PAGE_ICON"   value="Export.png"></property>
+        <property name="DELETE_ICON"        value="Delete.png"></property>
+        <property name="EXIT_ICON"          value="Exit.png"></property>        
+        
+        <!-- TOOLTIPS FOR BUTTONS -->
+        <property name="NEW_COURSE_TOOLTIP"    value="Create a New Course"></property>
+        <property name="LOAD_COURSE_TOOLTIP"   value="Load and Existing Course"></property>
+        <property name="SAVE_COURSE_TOOLTIP"   value="Save this Course"></property>
+        <property name="VIEW_SCHEDULE_TOOLTIP" value="View the Schedule Page"></property>
+        <property name="EXPORT_PAGE_TOOLTIP"   value="Export the Schedule Page"></property>
+        <property name="DELETE_TOOLTIP"        value="Delete this Course"></property>
+        <property name="EXIT_TOOLTIP"          value="Exit the Application"></property>
+        
+        <!-- GUI LABELS -->
+        <property name="COURSE_HEADING_LABEL"           value="Course Site Details"></property>
+        <property name="COURSE_INFO_LABEL"              value="Course Information"></property>
+        <property name="COURSE_SUBJECT_LABEL"           value="Subject:"></property>
+        <property name="COURSE_NUMBER_LABEL"            value="Number:"></property>
+        <property name="COURSE_TITLE_LABEL"             value="Title:"></property>
+        <property name="INSTRUCTOR_NAME_LABEL"          value="Instrctor Name:"></property>
+        <property name="INSTRUCTOR_URL_LABEL"           value="Instructor Homepage:"></property>
+        <property name="PAGES_SELECTION_HEADING_LABEL"  value="Site Pages"></property>
+        <property name="SCHEDULE_HEADING_LABEL"         value="Course Schedule"></property>
+        <property name="DATE_BOUNDARIES_LABEL"          value="Semester Dates"></property>
+        <property name="STARTING_MONDAY_LABEL"          value="Starting Monday:"></property>
+        <property name="ENDING_FRIDAY_LABEL"            value="Ending Friday:"></property>
+        <property name="LECTURE_DAY_SELECT_LABEL"       value="Lecture Days"></property>
+        
+        <!-- ERROR MESSAGES -->
+        <property name="START_DATE_AFTER_END_DATE_ERROR_MESSAGE"    value="The Starting Monday cannot be chronologically after the Ending Friday"></property>
+        <property name="START_DATE_NOT_A_MONDAY_ERROR_MESSAGE"      value="The Start Date must be a Monday"></property>
+        <property name="END_DATE_NOT_A_FRIDAY_ERROR_MESSAGE"        value="The End Date must be a Friday"></property>
+        <property name="CLOSE_BUTTON_TEXT"                          value="Close"></property>
+
+        <!-- VERIFICATION MESSAGES -->
+        <property name="NEW_COURSE_CREATED_MESSAGE"     value="New Course Created but not yet Saved"></property>
+        <property name="COURSE_LOADED_MESSAGE"          value="The Course has been Loaded"></property>
+        <property name="COURSE_SAVED_MESSAGE"           value="The Course has been Saved"></property>
+        <property name="SITE_EXPORTED_MESSAGE"          value="The Course Site has been Exported"></property>
+        <property name="SAVE_UNSAVED_WORK_MESSAGE"      value="Do you want to save your unsaved work first?"></property>
+        
+    </property_list>
+    <property_options_list>
+    </property_options_list>
+</properties>
