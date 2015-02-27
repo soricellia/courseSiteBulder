@@ -117,6 +117,8 @@ public class JsonCourseFileManager implements CourseFileManager {
         
         // NOW LOAD THE COURSE
         courseToLoad.setSubject(Subject.valueOf(json.getString(JSON_SUBJECT)));
+        courseToLoad.setSemester(Semester.valueOf(json.getString(JSON_SEMESTER)));
+        courseToLoad.setYear(json.getInt(JSON_YEAR));
         courseToLoad.setNumber(json.getInt(JSON_NUMBER));
         courseToLoad.setTitle(json.getString(JSON_TITLE));
         
@@ -203,13 +205,13 @@ public class JsonCourseFileManager implements CourseFileManager {
     public ArrayList<String> loadSubjects(String jsonFilePath) throws IOException {
         return loadArrayFromJSONFile(jsonFilePath, JSON_SUBJECTS);
     }
+    
+    @Override
     public ArrayList<String> loadSemesters(String jsonFilePath) throws IOException {
         return loadArrayFromJSONFile(jsonFilePath,JSON_SEMESTER);
     }
     
-    public ArrayList<String> loadYears(String jsonFilePath) throws IOException{
-        return loadArrayFromJSONFile(jsonFilePath,JSON_YEAR);
-    }
+   
     // AND HERE ARE THE PRIVATE HELPER METHODS TO HELP THE PUBLIC ONES
     
     // LOADS A JSON FILE AS A SINGLE OBJECT AND RETURNS IT

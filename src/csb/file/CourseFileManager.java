@@ -20,4 +20,5 @@ public interface CourseFileManager {
     public Instructor           loadLastInstructor(String filePath) throws IOException;
     public void                 saveSubjects(List<Object> subjects, String filePath) throws IOException;
     public ArrayList<String>    loadSubjects(String filePath) throws IOException;
+    public ArrayList<String>    loadSemesters(String filePath) throws IOException;
 }

@@ -275,7 +275,7 @@ public class CourseSiteExporter {
                 addDayOfWeekElement(scheduleDoc, dowRowDataElement, countingDate.getMonthValue(),countingDate.getDayOfMonth());
                 countingDate.plusDays(1);
             }
-            // ADVANCE THE COUNTING DATE TO END OF WEEK
+            // ADVANCE THE COUNTING DATE TO NEXT WEEK
             countingDate = countingDate.plusDays(2);
             
             // AND PUT IT IN THE TABLE
@@ -295,7 +295,7 @@ public class CourseSiteExporter {
     
     // ADDS DATA TO A DAY OF WEEK TABLE ROW TO THE SCHDULE PAGE SCHEDULE TABLE
     private void addDayOfWeekElement(Document scheduleDoc, Element tableRow,int monthValue, int dayOfMonth){
-        Element dayOfWeekElement = scheduleDoc.createElement(HTML.Tag.TR.toString());
+        Element dayOfWeekElement = scheduleDoc.createElement(HTML.Tag.TD.toString());
         dayOfWeekElement.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_SCH);
         dayOfWeekElement.setTextContent(monthValue+SLASH+dayOfMonth);
         tableRow.appendChild(dayOfWeekElement);
