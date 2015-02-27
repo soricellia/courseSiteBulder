@@ -199,10 +199,11 @@ public class CourseSiteExporter {
         Node titleNode = scheduleDoc.getElementsByTagName(HTML.Tag.TITLE.toString()).item(0);
         titleNode.setTextContent(courseToExport.getSubject() + " "
                 + courseToExport.getNumber());
-
+        //System.out.println(scheduleDoc.toString());
         // SET THE BANNER
         setBanner(scheduleDoc, courseToExport);
-
+        
+        //System.out.println(scheduleDoc.getTextContent());
         // NOW BUILD THE SCHEDULE TABLE
         fillScheduleTable(scheduleDoc, courseToExport);
         
@@ -273,10 +274,11 @@ public class CourseSiteExporter {
             int daysOfWeek = 5;
             for(int x = 0 ; x < daysOfWeek ; x++){
                 addDayOfWeekElement(scheduleDoc, dowRowDataElement, countingDate.getMonthValue(),countingDate.getDayOfMonth());
-                countingDate.plusDays(1);
+                countingDate = countingDate.plusDays(1);
             }
             // ADVANCE THE COUNTING DATE TO NEXT WEEK
-            countingDate = countingDate.plusDays(2);
+            int nextWeek = 7 - daysOfWeek;
+            countingDate = countingDate.plusDays(nextWeek);
             
             // AND PUT IT IN THE TABLE
             Node scheduleTableNode = getNodeWithId(scheduleDoc, HTML.Tag.TABLE.toString(), ID_SCHEDULE);
@@ -307,8 +309,11 @@ public class CourseSiteExporter {
         for (int i = 0; i < divNodes.getLength(); i++) {
             Node testNode = divNodes.item(i);
             Node testAttr = testNode.getAttributes().getNamedItem(HTML.Attribute.ID.toString());
-            if (testAttr.getNodeValue().equals(searchID)) {
-                return testNode;
+            //THIS IS ADDED
+            if(testAttr != null){
+                if (testAttr.getNodeValue().equals(searchID)) {
+                    return testNode;
+                }
             }
         }
         return null;
@@ -328,28 +333,30 @@ public class CourseSiteExporter {
 
     // SETS THE COURSE PAGE BANNER
     private void setBanner(Document doc, Course courseToExport) {
-       /**
+       //first get the banner div
         Node bannerNode = getNodeWithId(doc, HTML.Tag.DIV.toString(), ID_BANNER);
         
-        Element subjectNameAndNumberSpan = doc.createElement(HTML.Tag.SPAN.toString());
-        subjectNameAndNumberSpan.setTextContent(courseToExport.getSubject().toString()+" "+courseToExport.getNumber());
-        bannerNode.appendChild(subjectNameAndNumberSpan);
- 
-        Element brSpan = doc.createElement(HTML.Tag.SPAN.toString());
-        brSpan.setTextContent(LINE_BREAK);
-        bannerNode.appendChild(brSpan);
+        //then create a node to hold the first bit of text and append it to bannerNodes children
+        Node subjectAndTermNode = doc.createTextNode(courseToExport.getSubject().toString() + " " + courseToExport.getNumber()
+                +" "+DASH+" "+courseToExport.getSemester()+" "+courseToExport.getYear());
+        bannerNode.appendChild(subjectAndTermNode);
+        
+        //add a line brake element to bannerNode children
+        bannerNode.appendChild(doc.createElement(HTML.Tag.BR.toString()));
+        
+        //now we need the last bit of text added to bannerNodes children
+        bannerNode.appendChild(doc.createTextNode(courseToExport.getTitle()));
+        
+        
+        
+        /**
+        Element brElement = doc.createElement(HTML.Tag.BR.toString());
+        bannerNode.appendChild(brElement);
         
         Element courseTitleSpan = doc.createElement(HTML.Tag.SPAN.toString());
         courseTitleSpan.setTextContent(courseToExport.getTitle());
         bannerNode.appendChild(courseTitleSpan);
-        **/
-        
-        Node bannerNode = getNodeWithId(doc, HTML.Tag.DIV.toString(), ID_BANNER);
-        String bannerText = courseToExport.getSubject().toString() + " " + courseToExport.getNumber();
-        bannerText +=" "+DASH+" "+courseToExport.getSemester()+" "+courseToExport.getYear()+" "+DASH+" "
-                +LINE_BREAK + courseToExport.getTitle();
-        bannerNode.setTextContent(bannerText);
-        
+    **/
     }
     
     // USED FOR GETTING THE PAGE LINKS FOR PAGE LINKS IN THE NAVBAR
