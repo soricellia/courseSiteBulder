@@ -32,7 +32,7 @@
         <property name="COURSE_SUBJECT_LABEL"           value="Subject:"></property>
         <property name="COURSE_NUMBER_LABEL"            value="Number:"></property>
         <property name="COURSE_TITLE_LABEL"             value="Title:"></property>
-        <property name="INSTRUCTOR_NAME_LABEL"          value="Instrctor Name:"></property>
+       <property name="COURSE_YEAR_LABEL"	value="Year:"></property> <property name="COURSE_SEMESTER_LABEL"		value="Semester:"></property> <property name="INSTRUCTOR_NAME_LABEL"          value="Instrctor Name:"></property>
         <property name="INSTRUCTOR_URL_LABEL"           value="Instructor Homepage:"></property>
         <property name="PAGES_SELECTION_HEADING_LABEL"  value="Site Pages"></property>
         <property name="SCHEDULE_HEADING_LABEL"         value="Course Schedule"></property>

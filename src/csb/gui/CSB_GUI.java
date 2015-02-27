@@ -61,6 +61,7 @@ public class CSB_GUI implements CourseDataView {
     static final String EMPTY_TEXT = "";
     static final int LARGE_TEXT_FIELD_LENGTH = 20;
     static final int SMALL_TEXT_FIELD_LENGTH = 5;
+    static final int NUMBER_OF_YEARS = 2;
 
     // THIS MANAGES ALL OF THE APPLICATION'S DATA
     CourseDataManager dataManager;
@@ -111,6 +112,14 @@ public class CSB_GUI implements CourseDataView {
     ComboBox courseSubjectComboBox;
     Label courseNumberLabel;
     TextField courseNumberTextField;
+   
+    //THIS IS MY ADDED STUFF
+    Label courseSemesterLabel;
+    ComboBox courseSemesterComboBox;
+    Label courseYearLabel;
+    ComboBox courseYearComboBox;
+    //END ADDED STUFF
+    
     Label courseTitleLabel;
     TextField courseTitleTextField;
     Label instructorNameLabel;
@@ -240,13 +249,13 @@ public class CSB_GUI implements CourseDataView {
      * @param subjects The list of subjects to choose from.
      * @throws IOException Thrown if any initialization files fail to load.
      */
-    public void initGUI(String windowTitle, ArrayList<String> subjects) throws IOException {
+    public void initGUI(String windowTitle, ArrayList<String> subjects, ArrayList<String> semesters) throws IOException {
         // INIT THE TOOLBAR
         initFileToolbar();
 
         // INIT THE CENTER WORKSPACE CONTROLS BUT DON'T ADD THEM
         // TO THE WINDOW YET
-        initWorkspace(subjects);
+        initWorkspace(subjects,semesters);
 
         // NOW SETUP THE EVENT HANDLERS
         initEventHandlers();
@@ -287,6 +296,9 @@ public class CSB_GUI implements CourseDataView {
         // FIRST LOAD ALL THE BASIC COURSE INFO
         courseSubjectComboBox.setValue(courseToReload.getSubject());
         courseNumberTextField.setText("" + courseToReload.getNumber());
+        //things i added
+        courseSemesterComboBox.setValue(courseToReload.getSemester());
+        courseYearComboBox.setValue(courseToReload.getYear());
         courseTitleTextField.setText(courseToReload.getTitle());
         instructorNameTextField.setText(courseToReload.getInstructor().getName());
         instructorURLTextField.setText(courseToReload.getInstructor().getHomepageURL());
@@ -341,6 +353,8 @@ public class CSB_GUI implements CourseDataView {
     public void updateCourseInfo(Course course) {
         course.setSubject(Subject.valueOf(courseSubjectComboBox.getSelectionModel().getSelectedItem().toString()));
         course.setNumber(Integer.parseInt(courseNumberTextField.getText()));
+        course.setSemester(Semester.valueOf(courseSemesterComboBox.getSelectionModel().getSelectedItem().toString()));
+        course.setYear(Integer.parseInt(courseYearComboBox.getSelectionModel().getSelectedItem().toString()));
         course.setTitle(courseTitleTextField.getText());
         Instructor instructor = course.getInstructor();
         instructor.setName(instructorNameTextField.getText());
@@ -379,10 +393,10 @@ public class CSB_GUI implements CourseDataView {
     }
 
     // CREATES AND SETS UP ALL THE CONTROLS TO GO IN THE APP WORKSPACE
-    private void initWorkspace(ArrayList<String> subjects) throws IOException {
+    private void initWorkspace(ArrayList<String> subjects, ArrayList<String> semesters) throws IOException {
         // THE WORKSPACE HAS A FEW REGIONS, THIS 
         // IS FOR BASIC COURSE EDITING CONTROLS
-        initBasicCourseInfoControls(subjects);
+        initBasicCourseInfoControls(subjects, semesters);
 
         // THIS IS FOR SELECTING PAGE LINKS TO INCLUDE
         initPageSelectionControls();
@@ -427,7 +441,7 @@ public class CSB_GUI implements CourseDataView {
     }
 
     // INITIALIZES THE CONTROLS IN THE LEFT HALF OF THE TOP WORKSPACE
-    private void initBasicCourseInfoControls(ArrayList<String> subjects) throws IOException {
+    private void initBasicCourseInfoControls(ArrayList<String> subjects, ArrayList<String> semesters) throws IOException {
         // THESE ARE THE CONTROLS FOR THE BASIC SCHEDULE PAGE HEADER INFO
         // WE'LL ARRANGE THEM IN THE LEFT SIDE IN A VBox
         courseInfoPane = new GridPane();
@@ -443,7 +457,21 @@ public class CSB_GUI implements CourseDataView {
         // THEN CONTROLS FOR UPDATING THE COURSE NUMBER
         courseNumberLabel = initGridLabel(courseInfoPane, CSB_PropertyType.COURSE_NUMBER_LABEL, CLASS_PROMPT_LABEL, 2, 1, 1, 1);
         courseNumberTextField = initGridTextField(courseInfoPane, SMALL_TEXT_FIELD_LENGTH, EMPTY_TEXT, true, 3, 1, 1, 1);
-
+        
+        //----ADDED---
+        
+        //COURSE SEMESTER 
+        courseSemesterLabel=initGridLabel(courseInfoPane, CSB_PropertyType.COURSE_SEMESTER_LABEL,CLASS_PROMPT_LABEL,0,2,1,1 );
+        courseSemesterComboBox = initGridComboBox(courseInfoPane,1,2,1,1);
+        loadSemesterComboBox(semesters);
+        
+        //COURSE YEAR
+        courseYearLabel = initGridLabel(courseInfoPane, CSB_PropertyType.COURSE_YEAR_LABEL,CLASS_PROMPT_LABEL,2,2,1,1);
+        courseYearComboBox = initGridComboBox(courseInfoPane,3,2,1,1);
+        loadYearComboBox(NUMBER_OF_YEARS);
+        
+        //---------------------
+        
         // THEN THE COURSE TITLE
         courseTitleLabel = initGridLabel(courseInfoPane, CSB_PropertyType.COURSE_TITLE_LABEL, CLASS_PROMPT_LABEL, 0, 3, 1, 1);
         courseTitleTextField = initGridTextField(courseInfoPane, LARGE_TEXT_FIELD_LENGTH, EMPTY_TEXT, true, 1, 3, 3, 1);
@@ -668,7 +696,33 @@ public class CSB_GUI implements CourseDataView {
             courseSubjectComboBox.getItems().add(s);
         }
     }
-
+    //LOAD THE COMBO BOX TO HOLD SEMESTER 
+    private void loadSemesterComboBox(ArrayList<String> semesters){
+         for (String s : semesters) {
+            courseSemesterComboBox.getItems().add(s);
+        }
+    }
+    
+    //LOAD THE COMBO BOX TO HOLD THE NUMBER OF YEARS SPECIFIED.
+    //NUMBER OF YEARS CANNOT BE LESS THAN 1 
+    private void loadYearComboBox(int numberOfYears){
+        
+        //just get get rid of potential errors
+        if(numberOfYears < 1)
+            numberOfYears = 1;
+        
+        //first load current date into memory(used for the current year)
+        LocalDate date = LocalDate.now();
+        
+        //add years to combo box
+        for(int x = 0 ; x < numberOfYears; x++){
+            //this is to increment the year
+            int temp = date.getYear()+x;
+            //add year to combo box
+            courseYearComboBox.getItems().add(temp+"");
+        }
+        
+    }
     // INIT A TEXT FIELD AND PUT IT IN A GridPane
     private TextField initGridTextField(GridPane container, int size, String initText, boolean editable, int col, int row, int colSpan, int rowSpan) {
         TextField tf = new TextField();

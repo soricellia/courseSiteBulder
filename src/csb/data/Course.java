@@ -15,6 +15,8 @@ public class Course {
     // THESE COURSE DETAILS DESCRIBE WHAT'S REQUIRED BY
     // THE COURSE SITE PAGES
     Subject subject;
+    Semester semester;
+    int year;
     int number;
     String title;
     Instructor instructor;
@@ -55,7 +57,7 @@ public class Course {
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
-
+    
     public int getNumber() {
         return number;
     }
@@ -63,7 +65,18 @@ public class Course {
     public void setNumber(int number) {
         this.number = number;
     }
-
+    public Semester getSemester(){
+        return semester;
+    }
+    public void setSemester(Semester semester){
+        this.semester = semester;
+    }
+    public int getYear(){
+        return year;
+    }
+    public void setYear(int year){
+        this.year = year;
+    }
     public String getTitle() {
         return title;
     }

@@ -23,8 +23,8 @@ public class CourseDataManager {
     
     // DEFAULT INITIALIZATION VALUES FOR NEW COURSES
     static Subject  DEFAULT_COURSE_SUBJECT = Subject.CSE;
-    static int      DEFAULT_NUM = 0;
-    static String   DEFAULT_TEXT = "Unknown";
+    static int      DEFAULT_NUM = 219;
+    static String   DEFAULT_TEXT = "Computer Science III";
     static Semester DEFAULT_SEMESTER = Semester.FALL;
     
     public CourseDataManager(   CourseDataView initView,
@@ -56,8 +56,10 @@ public class CourseDataManager {
         // CLEAR ALL THE COURSE VALUES
         course.setSubject(DEFAULT_COURSE_SUBJECT);
         course.setNumber(DEFAULT_NUM);
+        course.setSemester(DEFAULT_SEMESTER);
         course.setTitle(DEFAULT_TEXT);
         LocalDate nextMonday = getNextMonday();
+        course.setYear(LocalDate.now().getYear());
         course.setStartingMonday(nextMonday);
         course.setEndingFriday(getNextFriday(nextMonday));
         course.clearLectureDays();

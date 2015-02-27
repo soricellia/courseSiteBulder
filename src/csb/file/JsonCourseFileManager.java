@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -87,6 +88,8 @@ public class JsonCourseFileManager implements CourseFileManager {
         JsonObject courseJsonObject = Json.createObjectBuilder()
                                     .add(JSON_SUBJECT, courseToSave.getSubject().toString())
                                     .add(JSON_NUMBER, courseToSave.getNumber())
+                                    .add(JSON_SEMESTER, courseToSave.getSemester().toString())
+                                    .add(JSON_YEAR, courseToSave.getYear())
                                     .add(JSON_TITLE, courseToSave.getTitle())
                                     .add(JSON_PAGES, pagesJsonArray)
                                     .add(JSON_INSTRUCTOR, instructorJsonObject)
@@ -200,7 +203,13 @@ public class JsonCourseFileManager implements CourseFileManager {
     public ArrayList<String> loadSubjects(String jsonFilePath) throws IOException {
         return loadArrayFromJSONFile(jsonFilePath, JSON_SUBJECTS);
     }
+    public ArrayList<String> loadSemesters(String jsonFilePath) throws IOException {
+        return loadArrayFromJSONFile(jsonFilePath,JSON_SEMESTER);
+    }
     
+    public ArrayList<String> loadYears(String jsonFilePath) throws IOException{
+        return loadArrayFromJSONFile(jsonFilePath,JSON_YEAR);
+    }
     // AND HERE ARE THE PRIVATE HELPER METHODS TO HELP THE PUBLIC ONES
     
     // LOADS A JSON FILE AS A SINGLE OBJECT AND RETURNS IT

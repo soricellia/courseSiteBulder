@@ -264,13 +264,24 @@ public class CourseSiteExporter {
             addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, WEDNESDAY_HEADER);
             addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, THURSDAY_HEADER);
             addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, FRIDAY_HEADER);
-
-            // ADVANCE THE COUNTING DATE BY ONE WEEK
-            countingDate = countingDate.plusDays(7);
+            
+            //ADD DAY OF THE WEEK ELEMENT
+            //FIRST MAKE A TABLE ROW
+            Element dowRowDataElement = scheduleDoc.createElement(HTML.Tag.TR.toString());
+            
+            //now add monday - friday data elements
+            int daysOfWeek = 5;
+            for(int x = 0 ; x < daysOfWeek ; x++){
+                addDayOfWeekElement(scheduleDoc, dowRowDataElement, countingDate.getMonthValue(),countingDate.getDayOfMonth());
+                countingDate.plusDays(1);
+            }
+            // ADVANCE THE COUNTING DATE TO END OF WEEK
+            countingDate = countingDate.plusDays(2);
             
             // AND PUT IT IN THE TABLE
             Node scheduleTableNode = getNodeWithId(scheduleDoc, HTML.Tag.TABLE.toString(), ID_SCHEDULE);
             scheduleTableNode.appendChild(dowRowHeaderElement);
+            scheduleTableNode.appendChild(dowRowDataElement);
         }
     }
 
@@ -280,6 +291,14 @@ public class CourseSiteExporter {
         dayOfWeekHeader.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_SCH);
         dayOfWeekHeader.setTextContent(dayOfWeekText);
         tableRow.appendChild(dayOfWeekHeader);
+    }
+    
+    // ADDS DATA TO A DAY OF WEEK TABLE ROW TO THE SCHDULE PAGE SCHEDULE TABLE
+    private void addDayOfWeekElement(Document scheduleDoc, Element tableRow,int monthValue, int dayOfMonth){
+        Element dayOfWeekElement = scheduleDoc.createElement(HTML.Tag.TR.toString());
+        dayOfWeekElement.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_SCH);
+        dayOfWeekElement.setTextContent(monthValue+SLASH+dayOfMonth);
+        tableRow.appendChild(dayOfWeekElement);
     }
 
     // FINDS AND RETURNS A NODE IN A DOCUMENT OF A CERTAIN TYPE WITH A CERTIAN ID
@@ -309,10 +328,28 @@ public class CourseSiteExporter {
 
     // SETS THE COURSE PAGE BANNER
     private void setBanner(Document doc, Course courseToExport) {
+       /**
+        Node bannerNode = getNodeWithId(doc, HTML.Tag.DIV.toString(), ID_BANNER);
+        
+        Element subjectNameAndNumberSpan = doc.createElement(HTML.Tag.SPAN.toString());
+        subjectNameAndNumberSpan.setTextContent(courseToExport.getSubject().toString()+" "+courseToExport.getNumber());
+        bannerNode.appendChild(subjectNameAndNumberSpan);
+ 
+        Element brSpan = doc.createElement(HTML.Tag.SPAN.toString());
+        brSpan.setTextContent(LINE_BREAK);
+        bannerNode.appendChild(brSpan);
+        
+        Element courseTitleSpan = doc.createElement(HTML.Tag.SPAN.toString());
+        courseTitleSpan.setTextContent(courseToExport.getTitle());
+        bannerNode.appendChild(courseTitleSpan);
+        **/
+        
         Node bannerNode = getNodeWithId(doc, HTML.Tag.DIV.toString(), ID_BANNER);
         String bannerText = courseToExport.getSubject().toString() + " " + courseToExport.getNumber();
-        bannerText += LINE_BREAK + courseToExport.getTitle();
+        bannerText +=" "+DASH+" "+courseToExport.getSemester()+" "+courseToExport.getYear()+" "+DASH+" "
+                +LINE_BREAK + courseToExport.getTitle();
         bannerNode.setTextContent(bannerText);
+        
     }
     
     // USED FOR GETTING THE PAGE LINKS FOR PAGE LINKS IN THE NAVBAR

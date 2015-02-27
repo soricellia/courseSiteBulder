@@ -38,6 +38,10 @@ public enum CSB_PropertyType {
         COURSE_INFO_LABEL,
         COURSE_SUBJECT_LABEL,
         COURSE_NUMBER_LABEL,
+        //ADDED
+        COURSE_SEMESTER_LABEL,
+        COURSE_YEAR_LABEL,
+        //ENDADDED
         COURSE_TITLE_LABEL,
         INSTRUCTOR_NAME_LABEL,
         INSTRUCTOR_URL_LABEL,

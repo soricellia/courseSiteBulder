@@ -23,6 +23,9 @@ public class CSB_StartupConstants
 
     // THESE ARE THE DATA FILES WE WILL LOAD AT STARTUP
     public static final String JSON_FILE_PATH_SUBJECTS = PATH_DATA + "subjects.json";
+    //this is added
+    public static final String JSON_FILE_PATH_SEMESTERS = PATH_DATA + "semesters.json";
+    //end added
     public static final String JSON_FILE_PATH_LAST_INSTRUCTOR = PATH_DATA + "last_instructor.json";
     
     // ERRO MESSAGE ASSOCIATED WITH PROPERTIES FILE LOADING ERRORS
