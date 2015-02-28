@@ -199,11 +199,13 @@ public class CourseSiteExporter {
         Node titleNode = scheduleDoc.getElementsByTagName(HTML.Tag.TITLE.toString()).item(0);
         titleNode.setTextContent(courseToExport.getSubject() + " "
                 + courseToExport.getNumber());
-        //System.out.println(scheduleDoc.toString());
-        // SET THE BANNER
+        
+        //BUILD THE NAV BAR
+        buildNavBar(scheduleDoc, courseToExport,CoursePage.SCHEDULE);
+        
+        // BUILD THE BANNER
         setBanner(scheduleDoc, courseToExport);
         
-        //System.out.println(scheduleDoc.getTextContent());
         // NOW BUILD THE SCHEDULE TABLE
         fillScheduleTable(scheduleDoc, courseToExport);
         
@@ -213,6 +215,7 @@ public class CourseSiteExporter {
         // AND RETURN THE FULL PAGE DOM
         return scheduleDoc;
     }
+    
     
     // INITIALIZES ALL THE HELPER FILES AND DIRECTORIES, LIKE FOR CSS
     private void setupCourseSite(String exportPath) throws IOException {
@@ -249,7 +252,7 @@ public class CourseSiteExporter {
         instructorLinkElement.setTextContent(courseInstructor.getName());
         instructorSpan.appendChild(instructorLinkElement);
     }
-
+    
     // FILLS IN THE SCHEDULE PAGE'S SCHEDULE TABLE
     private void fillScheduleTable(Document scheduleDoc, Course courseToExport) {
         LocalDate countingDate = courseToExport.getStartingMonday().minusDays(0);
@@ -297,9 +300,16 @@ public class CourseSiteExporter {
     
     // ADDS DATA TO A DAY OF WEEK TABLE ROW TO THE SCHDULE PAGE SCHEDULE TABLE
     private void addDayOfWeekElement(Document scheduleDoc, Element tableRow,int monthValue, int dayOfMonth){
+        //WE WANT TO CREATE A TD ELEMENT TO ADD THINGS TO
         Element dayOfWeekElement = scheduleDoc.createElement(HTML.Tag.TD.toString());
+        
         dayOfWeekElement.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_SCH);
-        dayOfWeekElement.setTextContent(monthValue+SLASH+dayOfMonth);
+         //WE WANT OUR DATES TO BE BOLD SO WE ADD THE DATE TO THIS ELEMENT
+        Element boldElement = scheduleDoc.createElement(HTML.Tag.STRONG.toString());
+        boldElement.setTextContent(monthValue+SLASH+dayOfMonth);
+        //NOW WE ADD THE BOLDED DATE TO OUR TD
+        dayOfWeekElement.appendChild(boldElement);
+        //FINALLY WE ADD OUR TD TO OUR TR
         tableRow.appendChild(dayOfWeekElement);
     }
 
@@ -330,7 +340,71 @@ public class CourseSiteExporter {
         Source source = new DOMSource(doc);
         transformer.transform(source, result);
     }
+    //SETS THE REQUIRED NAV BAR
+    private void buildNavBar(Document doc, Course courseToExport, CoursePage currentPage){
+        //first grab navbar div element in doc
+        Node navBarNode = getNodeWithId(doc, HTML.Tag.DIV.toString(),ID_NAVBAR);
+       //THIS LOOP BUILDS EACH NAV LINK SPECIFIED IN courseToExport.getPages()
+        for(int x = 0 ; x < courseToExport.getPages().size(); x++){
+            //first grab the coursePage
+            CoursePage pageIterator = courseToExport.getPages().get(x);
+           
+            Element navLink = doc.createElement(HTML.Tag.A.toString());
 
+           //now create a link with the coursePage
+            
+            if(pageIterator.equals(CoursePage.HWS)){
+                //set link ID
+                navLink.setAttribute(HTML.Attribute.ID.toString(), ID_HWS_LINK);
+                //set links location
+                navLink.setAttribute(HTML.Attribute.HREF.toString(),HWS_PAGE);
+                //set links text
+                navLink.setTextContent(HWS_HEADER);
+            }
+            if(pageIterator.equals(CoursePage.INDEX)){
+                //set link ID
+                navLink.setAttribute(HTML.Attribute.ID.toString(), ID_HOME_LINK);
+                //set links location
+                navLink.setAttribute(HTML.Attribute.HREF.toString(),INDEX_PAGE);
+                //set links text
+                navLink.setTextContent(INDEX_HEADER);
+            }
+            if(pageIterator.equals(CoursePage.PROJECTS)){
+                //set link ID
+                navLink.setAttribute(HTML.Attribute.ID.toString(), ID_PROJECTS_LINK);
+                //set links location
+                navLink.setAttribute(HTML.Attribute.HREF.toString(),PROJECTS_PAGE);
+                //set links text
+                navLink.setTextContent(PROJECTS_HEADER);
+            }
+            if(pageIterator.equals(CoursePage.SCHEDULE)){
+                //set link ID
+                navLink.setAttribute(HTML.Attribute.ID.toString(), ID_SCHEDULE_LINK);
+                //set links location
+                navLink.setAttribute(HTML.Attribute.HREF.toString(),SCHEDULE_PAGE);
+                //set links text
+                navLink.setTextContent(SCHEDULE_HEADER);
+            }
+            if(pageIterator.equals(CoursePage.SYLLABUS)){
+                //set link ID
+                navLink.setAttribute(HTML.Attribute.ID.toString(), ID_SYLLABUS_LINK);
+                //set links location
+                navLink.setAttribute(HTML.Attribute.HREF.toString(),SYLLABUS_PAGE);
+                //set links text
+                navLink.setTextContent(SYLLABUS_HEADER);
+            }
+            //check to see this the navLink is for the currentPage
+            //set navLink to open_nav class
+            if(pageIterator.equals(currentPage))
+                    navLink.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_OPEN_NAV);
+            else
+                    navLink.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_NAV);
+            
+            //finally add navLink to navBar
+            navBarNode.appendChild(navLink);
+                
+        }
+    }
     // SETS THE COURSE PAGE BANNER
     private void setBanner(Document doc, Course courseToExport) {
        //first get the banner div
@@ -346,17 +420,7 @@ public class CourseSiteExporter {
         
         //now we need the last bit of text added to bannerNodes children
         bannerNode.appendChild(doc.createTextNode(courseToExport.getTitle()));
-        
-        
-        
-        /**
-        Element brElement = doc.createElement(HTML.Tag.BR.toString());
-        bannerNode.appendChild(brElement);
-        
-        Element courseTitleSpan = doc.createElement(HTML.Tag.SPAN.toString());
-        courseTitleSpan.setTextContent(courseToExport.getTitle());
-        bannerNode.appendChild(courseTitleSpan);
-    **/
+   
     }
     
     // USED FOR GETTING THE PAGE LINKS FOR PAGE LINKS IN THE NAVBAR

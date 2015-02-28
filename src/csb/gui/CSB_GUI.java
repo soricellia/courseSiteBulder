@@ -92,6 +92,7 @@ public class CSB_GUI implements CourseDataView {
     FlowPane fileToolbarPane;
     Button newCourseButton;
     Button saveCourseButton;
+    Button loadCourseButton;
     Button exportSiteButton;
     Button exitButton;
 
@@ -247,6 +248,7 @@ public class CSB_GUI implements CourseDataView {
      *
      * @param windowTitle The text to appear in the UI window's title bar.
      * @param subjects The list of subjects to choose from.
+     * @param semesters The list of semesters to choose from.
      * @throws IOException Thrown if any initialization files fail to load.
      */
     public void initGUI(String windowTitle, ArrayList<String> subjects, ArrayList<String> semesters) throws IOException {
@@ -354,6 +356,7 @@ public class CSB_GUI implements CourseDataView {
         course.setSubject(Subject.valueOf(courseSubjectComboBox.getSelectionModel().getSelectedItem().toString()));
         course.setNumber(Integer.parseInt(courseNumberTextField.getText()));
         course.setSemester(Semester.valueOf(courseSemesterComboBox.getSelectionModel().getSelectedItem().toString()));
+        System.out.println(Semester.valueOf(courseSemesterComboBox.getSelectionModel().getSelectedItem().toString()));
         course.setYear(Integer.parseInt(courseYearComboBox.getSelectionModel().getSelectedItem().toString()));
         course.setTitle(courseTitleTextField.getText());
         Instructor instructor = course.getInstructor();
@@ -388,6 +391,7 @@ public class CSB_GUI implements CourseDataView {
         // START AS ENABLED (false), WHILE OTHERS DISABLED (true)
         newCourseButton = initChildButton(fileToolbarPane, CSB_PropertyType.NEW_COURSE_ICON, CSB_PropertyType.NEW_COURSE_TOOLTIP, false);
         saveCourseButton = initChildButton(fileToolbarPane, CSB_PropertyType.SAVE_COURSE_ICON, CSB_PropertyType.SAVE_COURSE_TOOLTIP, true);
+        loadCourseButton = initChildButton(fileToolbarPane,CSB_PropertyType.LOAD_COURSE_ICON,CSB_PropertyType.LOAD_COURSE_TOOLTIP,false);
         exportSiteButton = initChildButton(fileToolbarPane, CSB_PropertyType.EXPORT_PAGE_ICON, CSB_PropertyType.EXPORT_PAGE_TOOLTIP, true);
         exitButton = initChildButton(fileToolbarPane, CSB_PropertyType.EXIT_ICON, CSB_PropertyType.EXIT_TOOLTIP, false);
     }
@@ -579,6 +583,9 @@ public class CSB_GUI implements CourseDataView {
         saveCourseButton.setOnAction(e -> {
             fileController.handleSaveCourseRequest(this, dataManager.getCourse());
         });
+        loadCourseButton.setOnAction(e->{
+            fileController.handleLoadCourseRequest(this);
+        });
         exportSiteButton.setOnAction(e -> {
             fileController.handleExportCourseRequest(this);
         });
@@ -589,6 +596,12 @@ public class CSB_GUI implements CourseDataView {
         // THEN THE COURSE EDITING CONTROLS
         courseController = new CourseEditController();
         courseSubjectComboBox.setOnAction(e -> {
+            courseController.handleCourseChangeRequest(this);
+        });
+        courseSemesterComboBox.setOnAction(e ->{
+            courseController.handleCourseChangeRequest(this);
+        });
+        courseYearComboBox.setOnAction(e ->{
             courseController.handleCourseChangeRequest(this);
         });
         indexPageCheckBox.setOnAction(e -> {

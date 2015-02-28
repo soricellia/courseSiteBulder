@@ -228,10 +228,12 @@ public class JsonCourseFileManager implements CourseFileManager {
     // RETURNS IT AS AN ArrayList FULL OF THE DATA FOUND
     private ArrayList<String> loadArrayFromJSONFile(String jsonFilePath, String arrayName) throws IOException {
         JsonObject json = loadJSONFile(jsonFilePath);
-        ArrayList<String> items = new ArrayList();
+        ArrayList<String> items;
+        items = new ArrayList();
         JsonArray jsonArray = json.getJsonArray(arrayName);
         for (JsonValue jsV : jsonArray) {
-            items.add(jsV.toString());
+            //i fixed this so it no longer adds the quotes around my json String
+            items.add(jsV.toString().substring(1, jsV.toString().length()-1));
         }
         return items;
     }

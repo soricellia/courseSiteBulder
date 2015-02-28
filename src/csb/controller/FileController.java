@@ -1,6 +1,7 @@
 package csb.controller;
 
 import static csb.CSB_PropertyType.COURSE_SAVED_MESSAGE;
+import static csb.CSB_PropertyType.COURSE_LOADED_MESSAGE;
 import static csb.CSB_PropertyType.NEW_COURSE_CREATED_MESSAGE;
 import static csb.CSB_PropertyType.SAVE_UNSAVED_WORK_MESSAGE;
 import static csb.CSB_StartupConstants.CLOSE_BUTTON_LABEL;
@@ -154,6 +155,9 @@ public class FileController {
             if (continueToOpen) {
                 // GO AHEAD AND PROCEED LOADING A Course
                 promptToOpen(gui);
+                // TELL THE USER THE FILE HAS BEEN LOADED
+                messageDialog.show(properties.getProperty(COURSE_LOADED_MESSAGE));
+
             }
         } catch (IOException ioe) {
             // SOMETHING WENT WRONG
@@ -307,14 +311,14 @@ public class FileController {
             try {
                 Course courseToLoad = gui.getDataManager().getCourse();
                 courseIO.loadCourse(courseToLoad, selectedFile.getAbsolutePath());
-               
-                // NOTE THAT WE HAVE NOW LOADED THE COURSE, BUT IT IS NOT
-                // LOADED INTO THE GUI. YOU WILL HAVE TO DO THAT
                 
                 saved = true;
                 gui.updateToolbarControls(saved);
+                
                 Instructor lastInstructor = courseToLoad.getInstructor();
                 courseIO.saveLastInstructor(lastInstructor, JSON_FILE_PATH_LAST_INSTRUCTOR);
+                gui.reloadCourse(courseToLoad);
+                
             } catch (Exception e) {
                 ErrorHandler eH = ErrorHandler.getErrorHandler();
                 eH.handleLoadCourseError();

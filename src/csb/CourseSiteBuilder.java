@@ -55,7 +55,7 @@ public class CourseSiteBuilder extends Application {
                 
                 Instructor lastInstructor = jsonFileManager.loadLastInstructor(JSON_FILE_PATH_LAST_INSTRUCTOR);
                 ArrayList<String> subjects = jsonFileManager.loadSubjects(JSON_FILE_PATH_SUBJECTS);
-                ArrayList<String> semesters = jsonFileManager.loadSemesters(JSON_FILE_PATH_SEMESTERS);                
+                ArrayList<String> semesters = jsonFileManager.loadSemesters(JSON_FILE_PATH_SEMESTERS); 
                 // AND NOW GIVE ALL OF THIS STUFF TO THE GUI
                 // INITIALIZE THE USER INTERFACE COMPONENTS
                 gui = new CSB_GUI(primaryStage);
